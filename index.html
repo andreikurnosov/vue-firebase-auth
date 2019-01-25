@@ -12,13 +12,15 @@
     <div id="app">
       <h1>Vue - Firebase Auth</h1>
       <div v-if="authUser">
-        <h2>Singned in as {{authUser.email}}</h2>
+        <h2>Signed in as {{authUser.email}}</h2>
+        <img :src="authUser.photoURL" alt="avatar" height="150">
+        <p>What's up, {{authUser.displayName || 'friend' }}?</p>
         <button @click="signOut">Sign out</button>
       </div>
 
       <div v-else>
         <form @submit.prevent="register">
-          <h3>Register</h3>
+          <h2>Register</h2>
 
           <input v-model="email" type="email" placeholder="Type your email">
 
@@ -28,7 +30,7 @@
         </form>
 
         <form @submit.prevent="signIn">
-            <h3>Sign In</h3>
+            <h2>Sign In</h2>
 
             <input v-model="email" type="email" placeholder="Type your email">
 
@@ -36,6 +38,10 @@
 
             <button>Sign In</button>
           </form>
+          <div>
+            <h2>Sign in with Google</h2>
+            <button @click="sighInWithGoogle">Sign In</button>
+          </div>
       </div>
     </div>
 
@@ -75,6 +81,12 @@
             firebase.auth().signInWithEmailAndPassword(this.email, this.password)
               // .then(this.authUser = user)
               .catch(error => alert(':/ ' + error.message))
+          },
+          sighInWithGoogle () {
+            const provider = new firebase.auth.GoogleAuthProvider()
+            firebase.auth().signInWithPopup(provider)
+              .catch(error => alert('👿 ' + error.message))
+              .then(data => console.log(data.user, data.credential.accessToken))
           }
         },
 
