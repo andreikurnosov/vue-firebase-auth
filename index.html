@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Firebase auth</title>
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
+  </head>
+  <body>
+    <div class="app"><h1>Vue - Firebase Auth</h1></div>
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAej_WB-djdGBr3YbpWLF5YCeYIcIEVIxc",
+        authDomain: "vue-exp.firebaseapp.com",
+        databaseURL: "https://vue-exp.firebaseio.com",
+        projectId: "vue-exp",
+        storageBucket: "vue-exp.appspot.com",
+        messagingSenderId: "662722619560"
+      };
+      firebase.initializeApp(config);
+
+      new Vue({
+        el: '#app',
+
+        data: {
+          email: '',
+          password: ''
+        },
+
+        methods: {
+          register () {
+            firebase.auth.createUserWithEmailAndPassword(this.email, this.password) 
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
