@@ -9,7 +9,35 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.22/dist/vue.js"></script>
   </head>
   <body>
-    <div class="app"><h1>Vue - Firebase Auth</h1></div>
+    <div id="app">
+      <h1>Vue - Firebase Auth</h1>
+      <div v-if="authUser">
+        <h2>Singned in as {{authUser.email}}</h2>
+        <button @click="signOut">Sign out</button>
+      </div>
+
+      <div v-else>
+        <form @submit.prevent="register">
+          <h3>Register</h3>
+
+          <input v-model="email" type="email" placeholder="Type your email">
+
+          <input v-model="password" type="password" placeholder="Pick your password">
+
+          <button>Register</button>
+        </form>
+
+        <form @submit.prevent="signIn">
+            <h3>Sign In</h3>
+
+            <input v-model="email" type="email" placeholder="Type your email">
+
+            <input v-model="password" type="password" placeholder="Type your password">
+
+            <button>Sign In</button>
+          </form>
+      </div>
+    </div>
 
     <script>
       // Initialize Firebase
@@ -28,13 +56,24 @@
 
         data: {
           email: '',
-          password: ''
+          password: '',
+          authUser: null
         },
 
         methods: {
           register () {
-            firebase.auth.createUserWithEmailAndPassword(this.email, this.password) 
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          },
+          signOut () {
+            firebase.auth().signOut()
+          },
+          signIn () {
+            firebase.auth().signInWithEmailAndPassword(this.email, this.password)
           }
+        },
+
+        created () {
+          firebase.auth().onAuthStateChanged(user => { this.authUser = user })
         }
       })
     </script>
